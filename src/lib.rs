@@ -1,6 +1,6 @@
 use rand::Rng;
 
-fn main() {
+pub fn random_number_print() {
 
     let random_number = rand::thread_rng().gen_range(1..=100);
 

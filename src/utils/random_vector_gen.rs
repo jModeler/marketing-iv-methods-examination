@@ -1,4 +1,4 @@
-use ndarray::{Array, Array2};
+use ndarray::Array2;
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Distribution;
 

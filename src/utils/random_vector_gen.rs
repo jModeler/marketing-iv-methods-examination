@@ -7,8 +7,7 @@ pub fn random_vector_generate<D>(n: usize, dist: D) -> Array2<f64>
 where
     D: Distribution<f64> + 'static,
 {
-
-    let random_vector = Array2::random((n,1), dist);
-
-    return random_vector;
+    Array2::random((n,1), dist)
 }
+
+// function to create 

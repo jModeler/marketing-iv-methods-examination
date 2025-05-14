@@ -9,5 +9,3 @@ where
 {
     Array2::random((n,1), dist)
 }
-
-// function to create 

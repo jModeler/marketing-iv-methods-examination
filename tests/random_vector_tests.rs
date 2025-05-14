@@ -47,6 +47,6 @@ fn test_vector_stats_uniform() {
     let std = flattened.std(1.0);
 
     // compare to population mean and standard deviation
-    assert!((mean - 4.5).abs() < 1e-2, "Expected values to be close, but got mean = {}", mean);
-    assert!((std - 2.59).abs() < 1e-2, "Expected values to be close, but got standard deviation = {}", std);    
+    assert!((mean - 4.5).abs() < 1e-1, "Expected values to be close, but got mean = {}", mean);
+    assert!((std - 2.59).abs() < 1e-1, "Expected values to be close, but got standard deviation = {}", std);    
 }

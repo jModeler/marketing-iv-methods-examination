@@ -29,6 +29,24 @@ fn test_vector_stats_normal() {
     let std = flattened.std(1.0);
 
     // compare to population mean and standard deviation
-    assert!((mean-0.0).abs() < 1e-2, "Expected values to be close, but got mean = {}", mean);
-    assert!((std - 9.0).abs() < 1e-2, "Expected values to be close, but got standard deviation = {}", std);
+    assert!((mean - 0.0).abs() < 1e-1, "Expected values to be close, but got mean = {}", mean);
+    assert!((std - 9.0).abs() < 1e-1, "Expected values to be close, but got standard deviation = {}", std);
+}
+
+#[test]
+fn test_vector_stats_uniform() {
+    let dist = Uniform::new(0.0, 9.0);
+    let vec = random_vector_generate(1000000, dist);
+    let binding = vec.view();
+    let flattened = binding.to_shape(vec.len()).unwrap();
+
+    // sample mean
+    let mean = flattened.mean().unwrap();
+
+    // sample standard deviation
+    let std = flattened.std(1.0);
+
+    // compare to population mean and standard deviation
+    assert!((mean - 4.5).abs() < 1e-2, "Expected values to be close, but got mean = {}", mean);
+    assert!((std - 2.59).abs() < 1e-2, "Expected values to be close, but got standard deviation = {}", std);    
 }

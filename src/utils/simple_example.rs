@@ -5,6 +5,7 @@ use ndarray::Array2;
 use ndarray_rand::rand_distr::Normal;
 
 // define a structure to store the data returned by ind_var_generate
+#[derive(Debug)]  // for testing purposes later
 pub struct IndVars {
     pub v: Array2<f64>,
     pub e_x: Array2<f64>,

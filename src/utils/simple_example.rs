@@ -14,13 +14,21 @@ pub struct IndVars {
     pub sigma_ex: f64,
 }
 
-pub fn ind_var_generate(n: usize, alpha_x: f64, sigma_a: f64, sigma_ex: f64) -> IndVars {
+pub fn ind_var_generate(n: usize, alpha_x: f64, sigma_a: f64, sigma_ex: f64) -> Result<IndVars, String> {
     /*
     n: number of observations, or the number of rows in the array being generated
     alpha_x: coefficient of v
     sigma_a: the standard deviation of v, has to be positive
     sigma_ex: the standard deviation of the error term, e_x, has to be positive
     */
+
+    // check that sigma values are positive
+    if sigma_a <= 0.0 {
+        return Err("sigma_a must be positive".into());
+    }
+    if sigma_ex <= 0.0 {
+        return Err("sigma_ex must be positive".into());
+    }
 
     // generate the error term
     let dist_v = Normal::new(0.0, sigma_a).unwrap(); 
@@ -33,13 +41,12 @@ pub fn ind_var_generate(n: usize, alpha_x: f64, sigma_a: f64, sigma_ex: f64) -> 
     let x = alpha_x * &v + &e_x; //& helps me borrow v and e_x immutably so I can use them later
 
     // return a data struct holding the values generated
-     IndVars {
+     Ok(IndVars {
         v,
         e_x,
         x,
         alpha_x,
         sigma_a,
         sigma_ex,
-    }   
-
+    }) 
 }

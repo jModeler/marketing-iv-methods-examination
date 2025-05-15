@@ -3,11 +3,14 @@ mod utils;
 use utils::simple_example::ind_var_generate;
 
 fn main() {
-    let n: usize = 15;
-    let alpha_x: f64 = 2.5;
-    let sigma_a: f64 = 1.0;
-    let sigma_ex: f64 = 1.0;
-    
+    // let n: usize = 15;
+    // let alpha_x: f64 = 2.5;
+    // let sigma_a: f64 = 1.0;
+    // let sigma_ex: f64 = 1.0;
+    // rust infers the type based on context, so we could use the line below
+    let (n, alpha_x, sigma_a, sigma_ex) = (15, 2.5, 1.0, 1.0);
+
+
     match ind_var_generate(n, alpha_x, sigma_a, sigma_ex) {
         Ok(ind_vars) => {
             // Access and print the generated values

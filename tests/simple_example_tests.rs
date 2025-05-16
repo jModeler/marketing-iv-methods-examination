@@ -82,6 +82,14 @@ fn test_x_value() {
 }
 
 #[test]
+fn test_ind_var_values() {
+    let data = generate_valid_data();
+    assert_eq!(data.alpha_x, 2.5);
+    assert_eq!(data.sigma_a, 1.0);
+    assert_eq!(data.sigma_ex, 0.5);
+}
+
+#[test]
 fn test_y_value() {
     let data = generate_valid_data_y();
     let y_expected = &data.ind_vars.x * data.beta + &data.ind_vars.v * data.alpha_y + &data.e_y;

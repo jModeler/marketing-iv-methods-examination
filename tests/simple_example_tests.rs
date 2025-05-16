@@ -44,3 +44,9 @@ fn test_x_shape_matches_v() {
     assert_eq!(data.x.shape(), data.v.shape());
 }
 
+#[test]
+fn test_x_value() {
+    let data = generate_valid_data();
+    let x_expected = &data.v * data.alpha_x + &data.e_x;
+    assert_eq!(data.x, x_expected);
+}

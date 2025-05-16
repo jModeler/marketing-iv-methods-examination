@@ -95,3 +95,11 @@ fn test_y_value() {
     let y_expected = &data.ind_vars.x * data.beta + &data.ind_vars.v * data.alpha_y + &data.e_y;
     assert_eq!(data.y, y_expected);
 }
+
+#[test]
+fn test_dep_var_values() {
+    let data = generate_valid_data_y();
+    assert_eq!(data.beta, 0.5);
+    assert_eq!(data.alpha_y, 1.5);
+    assert_eq!(data.sigma_ey, 1.0);
+}

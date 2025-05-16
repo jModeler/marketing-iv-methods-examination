@@ -80,3 +80,10 @@ fn test_x_value() {
     let x_expected = &data.v * data.alpha_x + &data.e_x;
     assert_eq!(data.x, x_expected);
 }
+
+#[test]
+fn test_y_value() {
+    let data = generate_valid_data_y();
+    let y_expected = &data.ind_vars.x * data.beta + &data.ind_vars.v * data.alpha_y + &data.e_y;
+    assert_eq!(data.y, y_expected);
+}

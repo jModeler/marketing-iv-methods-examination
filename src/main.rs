@@ -12,7 +12,7 @@ fn main() {
     // let sigma_a: f64 = 1.0;
     // let sigma_ex: f64 = 1.0;
     // rust infers the type based on context, so we could use the line below
-    let (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) = (10000, 0.5, 1.5, 2.5, 1.0, 1.0, 1.0, false);
+    let (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) = (10000, -0.5, 1.5, 2.5, 1.0, 1.0, 1.0, false);
     let params = (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept);
 
     let ind_vars = match ind_var_generate(n, alpha_x, sigma_a, sigma_ex) {

@@ -1,6 +1,7 @@
 mod utils;
+mod simple_example;
 
-use utils::simple_example::{ind_var_generate, dep_var_generate};
+use simple_example::generate_vector_data::{ind_var_generate, dep_var_generate};
 
 fn main() {
     // let n: usize = 15;

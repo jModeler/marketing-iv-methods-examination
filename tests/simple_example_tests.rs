@@ -1,4 +1,4 @@
-use marketing_iv_methods::utils::simple_example::{ind_var_generate, dep_var_generate, IndVars, DepVars};
+use marketing_iv_methods::simple_example::generate_vector_data::{ind_var_generate, dep_var_generate, IndVars, DepVars};
 
 fn valid_input() -> (usize, f64, f64, f64) {
     (10, 2.5, 1.0, 0.5)

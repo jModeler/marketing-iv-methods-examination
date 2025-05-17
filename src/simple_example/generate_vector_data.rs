@@ -1,4 +1,4 @@
-use super::random_vector_gen::random_vector_generate; 
+use crate::utils::random_vector_gen::random_vector_generate; 
 // above statement is equivalent to use marketing_iv_methods::utils::random_vector_gen::random_vector_generate, 
 // used this since simple_example.rs and random_vector_gen.rs are in the same folder;
 use ndarray::Array2;

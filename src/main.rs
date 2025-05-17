@@ -3,7 +3,7 @@ mod simple_example;
 
 use ndarray::s;
 use simple_example::generate_vector_data::{ind_var_generate, dep_var_generate};
-use simple_example::run_regressions::run_yx_regression;
+use simple_example::run_regressions::run_yxv_regression;
 
 
 fn main() {
@@ -49,7 +49,7 @@ fn main() {
     };
 
     // run a regression
-    match run_yx_regression(params) {
+    match run_yxv_regression(params) {
         Ok(model) => {
             println!("Regression coefficients: {:?}", model.params());
         }

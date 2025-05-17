@@ -50,8 +50,16 @@ fn main() {
 
     // run a regression
     match run_yxv_regression(params) {
-        Ok(model) => {
-            println!("Regression coefficients: {:?}", model.params());
+        Ok((regression_result, generated_data)) => {
+            println!("Regression coefficients: {:?}", regression_result.params());
+            // print the first row of y_data and x_data
+            println!("First row of y: {:?}", generated_data.y.row(0));
+            println!("First row of x: {:?}", generated_data.x.row(0));
+            println!("First row of v: {:?}", generated_data.v.row(0));
+            // print the other values
+            println!("sigma_ex: {}", generated_data.sigma_ex);
+            println!("sigma_a: {}", generated_data.sigma_a);
+            println!("alpha_x: {}", generated_data.alpha_x);
         }
         Err(err_msg) => {
             eprintln!("Error with running yx regression: {}", err_msg);

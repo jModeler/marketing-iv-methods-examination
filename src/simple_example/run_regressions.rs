@@ -3,7 +3,18 @@ use super::generate_vector_data::{ind_var_generate, dep_var_generate};
 use ndarray::{Array2, Axis, concatenate};
 use linfa_linear::FittedLinearRegression;
 
-pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -> Result<FittedLinearRegression<f64>, String> {
+#[derive(Debug)]
+pub struct GeneratedData {
+    pub y: Array2<f64>,
+    pub x: Array2<f64>,
+    pub v: Array2<f64>,
+    pub sigma_ex: f64,
+    pub sigma_a: f64,
+    pub alpha_x: f64,
+}
+
+
+pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -> Result<(FittedLinearRegression<f64>, GeneratedData), String> {
     let (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) = params;
 
     let ind_vars = match ind_var_generate(n, alpha_x, sigma_a, sigma_ex) {
@@ -34,6 +45,16 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
         }
     };
 
-    // return the regression result object
-    Ok(yx_regression)
+    // create a tuple that contains the data I'll need for later regressions
+    let generated_data = GeneratedData {
+        y: dep_vars.y,
+        x: dep_vars.ind_vars.x,
+        v: dep_vars.ind_vars.v,
+        sigma_ex: dep_vars.ind_vars.sigma_ex,
+        sigma_a: dep_vars.ind_vars.sigma_a,
+        alpha_x: dep_vars.ind_vars.alpha_x,
+    };
+
+    // return the tuple of the regression result and the tuple of generated data
+    Ok((yx_regression, generated_data))
 }

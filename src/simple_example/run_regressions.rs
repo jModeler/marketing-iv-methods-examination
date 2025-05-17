@@ -37,7 +37,7 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
     let x = concatenate(Axis(1), &[dep_vars.ind_vars.x.view(), dep_vars.ind_vars.v.view()]).unwrap();
 
     // run the regression
-    let yx_regression = match run_regression::<&Array2<f64>, &Array2<f64>>(&x, &dep_vars.y, intercept) { // Rust compiler could not infer the types for X and y, hence the explicit type annotations
+    let yx_regression = match run_regression(&x, &dep_vars.y, intercept) {
         Ok(vars) => { vars }
         Err(err_msg) => {
             eprintln!("Error in the regression step: {}", err_msg);

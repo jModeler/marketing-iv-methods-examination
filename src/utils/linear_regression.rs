@@ -4,7 +4,7 @@ use linfa_linear::{LinearRegression, FittedLinearRegression};
 use ndarray::{Array2, Array1};
 
 // Run a regression model
-pub fn run_regression<X,Y>(
+pub fn run_regression(
     x: &Array2<f64>,
     y: &Array2<f64>,
     intercept: bool,

@@ -4,6 +4,8 @@ use ndarray::{Array2, Axis, concatenate};
 use linfa_linear::FittedLinearRegression;
 
 pub fn run_yx_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -> Result<FittedLinearRegression<f64>, String> {
+    let (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) = params;
+    
     let ind_vars = match ind_var_generate(n, alpha_x, sigma_a, sigma_ex) {
         Ok(vars) => { vars }
         Err(err_msg) => {

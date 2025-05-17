@@ -13,7 +13,7 @@ fn main() {
     // let sigma_ex: f64 = 1.0;
     // rust infers the type based on context, so we could use the line below
     let (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) = (10000, 0.5, 1.5, 2.5, 1.0, 1.0, 1.0, false);
-
+    let params = (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept);
 
     let ind_vars = match ind_var_generate(n, alpha_x, sigma_a, sigma_ex) {
         Ok(vars) => {
@@ -49,7 +49,7 @@ fn main() {
     };
 
     // run a regression
-    match run_yx_regression(n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) {
+    match run_yx_regression(params) {
         Ok(model) => {
             println!("Regression coefficients: {:?}", model.params());
         }

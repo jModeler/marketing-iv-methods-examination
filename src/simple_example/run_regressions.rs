@@ -8,9 +8,11 @@ pub struct GeneratedData {
     pub y: Array2<f64>,
     pub x: Array2<f64>,
     pub v: Array2<f64>,
+    pub e_y: Array2<f64>,
     pub sigma_ex: f64,
     pub sigma_a: f64,
     pub alpha_x: f64,
+    pub alpha_y: f64,
 }
 
 
@@ -50,11 +52,17 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
         y: dep_vars.y,
         x: dep_vars.ind_vars.x,
         v: dep_vars.ind_vars.v,
+        e_y: dep_vars.e_y,
         sigma_ex: dep_vars.ind_vars.sigma_ex,
         sigma_a: dep_vars.ind_vars.sigma_a,
         alpha_x: dep_vars.ind_vars.alpha_x,
+        alpha_y: dep_vars.alpha_y,
     };
 
     // return the tuple of the regression result and the tuple of generated data
     Ok((yx_regression, generated_data))
 }
+
+// pub fn run_other_regression(generated_data: GeneratedData, regression_flag) -> Result<FittedLinearRegression<f64>, String> {
+
+// }

@@ -65,7 +65,7 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
 
 pub fn run_other_regressions(generated_data: GeneratedData, intercept: bool) -> Result<(FittedLinearRegression<f64>, FittedLinearRegression<f64>), String> {
     // run the regression of y on x alone
-    let yx_regression = match run_regression(&generated_data.x, &generated_data.y, &intercept) {
+    let yx_regression = match run_regression(&generated_data.x, &generated_data.y, intercept) {
         Ok(model) => { model }
         Err(err_msg) => {
             eprintln!("Error in the regression of y on x: {}", err_msg);
@@ -74,12 +74,12 @@ pub fn run_other_regressions(generated_data: GeneratedData, intercept: bool) -> 
     };
 
     // generate composite error term
-    let ve = &generated_data.alpha_y * &generated_data.v + &generated_data.e_y;
+    let ve = generated_data.alpha_y * generated_data.v + &generated_data.e_y;
 
     // run the regression of alpha_y*v + e_y on x alone
-    let vex_regression = match run_regression(&generated_data.x, &ve, &intercept) {
+    let vex_regression = match run_regression(&generated_data.x, &ve, intercept) {
         Ok(model) => { model }
-        Err{err_msg} => {
+        Err(err_msg) => {
             eprintln!("Error in the regression of composite error term on x: {}", err_msg);
             return Err("Error in the regression of composite error term on x".into());            
         }

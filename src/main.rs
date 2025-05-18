@@ -13,7 +13,7 @@ fn main() {
     // let sigma_ex: f64 = 1.0;
     // rust infers the type based on context, so we could use the line below
     let (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) = (10000, -0.5, 1.5, 2.5, 1.0, 1.0, 1.0, false);
-    let params = (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, &intercept);
+    let params = (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept);
 
     let ind_vars = match ind_var_generate(n, alpha_x, sigma_a, sigma_ex) {
         Ok(vars) => {
@@ -66,17 +66,18 @@ fn main() {
         }
         Err(err_msg) => {
             eprintln!("Error with running yx regression: {}", err_msg);
+            return;
         }
     };
 
     // run the other regressions
-    match run_other_regressions(&generated_data, &intercept) {
+    match run_other_regressions(generated_data, intercept) {
         Ok((yx, vex)) => {
-            println!("Regression Coefficients of y on x: {:?}", yx.params());
-            println!("Regression Coefficients of composite error term on x: {:?}", vex.params()); 
+            println!("Regression Coefficient of y on x: {:?}", yx.params());
+            println!("Regression Coefficient of composite error term on x: {:?}", vex.params()); 
         }
         Err(err_msg) => {
-            eprintln!("Error with running the other regressions}", err_msg);
+            eprintln!("Error with running the other regressions: {}", err_msg);
         }
     }
 }

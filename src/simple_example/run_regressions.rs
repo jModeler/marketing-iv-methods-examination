@@ -74,7 +74,7 @@ pub fn run_other_regressions(generated_data: GeneratedData, intercept: bool) -> 
     };
 
     // generate composite error term
-    let ve = generated_data.alpha_y * generated_data.v + &generated_data.e_y;
+    let ve = generated_data.alpha_y * &generated_data.v + &generated_data.e_y;
 
     // run the regression of alpha_y*v + e_y on x alone
     let vex_regression = match run_regression(&generated_data.x, &ve, intercept) {

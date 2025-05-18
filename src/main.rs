@@ -3,7 +3,7 @@ mod simple_example;
 
 use ndarray::s;
 use simple_example::generate_vector_data::{ind_var_generate, dep_var_generate};
-use simple_example::run_regressions::run_yxv_regression;
+use simple_example::run_regressions::{run_yxv_regression, run_other_regressions};
 
 
 fn main() {

@@ -39,7 +39,7 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
     let x = concatenate(Axis(1), &[dep_vars.ind_vars.x.view(), dep_vars.ind_vars.v.view()]).unwrap();
 
     // run the regression
-    let yx_regression = match run_regression(&x, &dep_vars.y, intercept) {
+    let yxv_regression = match run_regression(&x, &dep_vars.y, intercept) {
         Ok(vars) => { vars }
         Err(err_msg) => {
             eprintln!("Error in the regression step: {}", err_msg);
@@ -60,9 +60,10 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
     };
 
     // return the tuple of the regression result and the tuple of generated data
-    Ok((yx_regression, generated_data))
+    Ok((yxv_regression, generated_data))
 }
 
-// pub fn run_other_regression(generated_data: GeneratedData, regression_flag) -> Result<FittedLinearRegression<f64>, String> {
-
+// pub fn run_other_regressions(generated_data: GeneratedData) -> Result<(FittedLinearRegression<f64>, FittedLinearRegression<f64>), String> {
+//     // run the regression of y on x alone
+//     let (yx_)
 // }

@@ -72,8 +72,9 @@ fn main() {
 
     // run the other regressions
     match run_other_regressions(&generated_data, intercept) {
-        Ok((yx, vex)) => {
+        Ok((yx, vex, bias)) => {
             println!("Regression Coefficient of y on x: {:?}", yx.params());
+            println!("Bias in the Coefficient of x: {:?}", bias);
             println!("Regression Coefficient of composite error term on x: {:?}", vex.params()); 
         }
         Err(err_msg) => {

@@ -48,7 +48,7 @@ fn main() {
         }
     };
 
-    // run a regression
+    // run the main regression
     match run_yxv_regression(params) {
         Ok((regression_result, generated_data)) => {
             println!("Regression coefficients: {:?}", regression_result.params());
@@ -62,9 +62,13 @@ fn main() {
             println!("sigma_a: {}", generated_data.sigma_a);
             println!("alpha_x: {}", generated_data.alpha_x);
             println!("alpha_y: {}", generated_data.alpha_y);
+            (regression_result, generated_data) // return unwrapped results
         }
         Err(err_msg) => {
             eprintln!("Error with running yx regression: {}", err_msg);
         }
     }
+
+    // run the other regressions
+    match
 }

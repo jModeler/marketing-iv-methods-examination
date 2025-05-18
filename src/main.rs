@@ -71,7 +71,7 @@ fn main() {
     };
 
     // run the other regressions
-    match run_other_regressions(generated_data, intercept) {
+    match run_other_regressions(&generated_data, intercept) {
         Ok((yx, vex)) => {
             println!("Regression Coefficient of y on x: {:?}", yx.params());
             println!("Regression Coefficient of composite error term on x: {:?}", vex.params()); 

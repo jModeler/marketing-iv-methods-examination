@@ -8,9 +8,11 @@ pub struct GeneratedData {
     pub y: Array2<f64>,
     pub x: Array2<f64>,
     pub v: Array2<f64>,
+    pub e_y: Array2<f64>,
     pub sigma_ex: f64,
     pub sigma_a: f64,
     pub alpha_x: f64,
+    pub alpha_y: f64,
 }
 
 
@@ -37,7 +39,7 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
     let x = concatenate(Axis(1), &[dep_vars.ind_vars.x.view(), dep_vars.ind_vars.v.view()]).unwrap();
 
     // run the regression
-    let yx_regression = match run_regression(&x, &dep_vars.y, intercept) {
+    let yxv_regression = match run_regression(&x, &dep_vars.y, intercept) {
         Ok(vars) => { vars }
         Err(err_msg) => {
             eprintln!("Error in the regression step: {}", err_msg);
@@ -50,11 +52,39 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
         y: dep_vars.y,
         x: dep_vars.ind_vars.x,
         v: dep_vars.ind_vars.v,
+        e_y: dep_vars.e_y,
         sigma_ex: dep_vars.ind_vars.sigma_ex,
         sigma_a: dep_vars.ind_vars.sigma_a,
         alpha_x: dep_vars.ind_vars.alpha_x,
+        alpha_y: dep_vars.alpha_y,
     };
 
     // return the tuple of the regression result and the tuple of generated data
-    Ok((yx_regression, generated_data))
+    Ok((yxv_regression, generated_data))
+}
+
+pub fn run_other_regressions(generated_data: GeneratedData, intercept: bool) -> Result<(FittedLinearRegression<f64>, FittedLinearRegression<f64>), String> {
+    // run the regression of y on x alone
+    let yx_regression = match run_regression(&generated_data.x, &generated_data.y, intercept) {
+        Ok(model) => { model }
+        Err(err_msg) => {
+            eprintln!("Error in the regression of y on x: {}", err_msg);
+            return Err("Error in the regression step of y on x".into());
+        }
+    };
+
+    // generate composite error term
+    let ve = generated_data.alpha_y * generated_data.v + &generated_data.e_y;
+
+    // run the regression of alpha_y*v + e_y on x alone
+    let vex_regression = match run_regression(&generated_data.x, &ve, intercept) {
+        Ok(model) => { model }
+        Err(err_msg) => {
+            eprintln!("Error in the regression of composite error term on x: {}", err_msg);
+            return Err("Error in the regression of composite error term on x".into());            
+        }
+    };
+
+    // return results
+    Ok((yx_regression, vex_regression))
 }

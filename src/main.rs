@@ -2,8 +2,8 @@ mod utils;
 mod simple_example;
 
 use std::env;
-use utils::plotting::plot_bias_vs_alpha_y;
-use simple_example::run_regressions::{run_yxv_regression, run_other_regressions, analyze_bias};
+use utils::plot_bias::plot_bias_vs_alpha_y;
+use simple_example::run_regressions::{run_yxv_regression, run_other_regressions};
 
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -27,9 +27,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let alpha_x = 2.5;
             let n = 10000; // or any value you prefer
             let params = (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept);
-            
+            let (_, generated_data) = run_yxv_regression(params).unwrap(); 
+            let (_, _, bias) = run_other_regressions(&generated_data, intercept).unwrap();
             // Print out the bias based on the regression
-            analyze_bias(params);
+            println!("Bias in x coefficient: {}", bias);
         }
         "bias-size" => {
             let mut alpha_y_values = vec![];
@@ -42,12 +43,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let params = (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept);
 
                 match run_yxv_regression(params) {
-                    Ok((regression_result, generated_data)) => {
+                    Ok((_, generated_data)) => {
                         match run_other_regressions(&generated_data, intercept) {
-                            Ok((yx, _, _)) => {
-                                // Extract the biased coefficient of x from the regression
-                                let coef_x_biased = yx.params()[0];
-                                let bias = coef_x_biased - beta; // Bias is the difference from true beta
+                            Ok((_, _, bias)) => {
+                                // add values to the vectors
                                 alpha_y_values.push(alpha_y);
                                 bias_values.push(bias);
                             }

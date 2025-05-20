@@ -3,6 +3,34 @@ use super::generate_vector_data::{ind_var_generate, dep_var_generate};
 use ndarray::{Array2, Axis, concatenate};
 use linfa_linear::FittedLinearRegression;
 
+/// A structure to hold the generated data used in the regression models.
+///
+/// This structure stores all the data generated for the regression process, including:
+/// - `y`: The dependent variable `y`.
+/// - `x`: The independent variable `x`.
+/// - `v`: The independent variable `v`.
+/// - `e_y`: The error term `e_y` for the dependent variable.
+/// - `sigma_ex`: The standard deviation of the error term `e_x`.
+/// - `sigma_a`: The standard deviation of the independent variable `v`.
+/// - `alpha_x`: The coefficient of the independent variable `v`.
+/// - `alpha_y`: The coefficient of the independent variable `x`.
+///
+/// # Example
+///
+/// ```rust
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::run_regressions::GeneratedData;
+/// let generated_data = GeneratedData {
+///     y: Array2::zeros((5, 1)),
+///     x: Array2::zeros((5, 1)),
+///     v: Array2::zeros((5, 1)),
+///     e_y: Array2::zeros((5, 1)),
+///     sigma_ex: 1.0,
+///     sigma_a: 1.0,
+///     alpha_x: 2.0,
+///     alpha_y: 1.5,
+/// };
+/// ```
 #[derive(Debug)]
 pub struct GeneratedData {
     pub y: Array2<f64>,
@@ -15,7 +43,44 @@ pub struct GeneratedData {
     pub alpha_y: f64,
 }
 
-
+/// Runs a regression of `y` on `x` and `v`, and returns the fitted regression model along with the generated data.
+///
+/// This function generates independent and dependent variables using the given parameters, then runs a regression model of `y` on `x` and `v`. It returns both the fitted regression model and the generated data as a tuple.
+///
+/// # Parameters
+/// 
+/// - `params`: A tuple containing:
+///   - `n`: The number of observations (number of rows in the generated arrays).
+///   - `beta`: The coefficient for `x` in the dependent variable equation.
+///   - `alpha_y`: The coefficient for `v` in the dependent variable equation.
+///   - `alpha_x`: The coefficient for `v` in the independent variable equation.
+///   - `sigma_a`: The standard deviation of the error term `v`.
+///   - `sigma_ex`: The standard deviation of the error term `e_x`.
+///   - `sigma_ey`: The standard deviation of the error term `e_y`.
+///   - `intercept`: A boolean indicating whether to include an intercept in the regression.
+///
+/// # Returns
+/// 
+/// Returns a `Result` containing:
+/// - `Ok`: A tuple where the first element is the fitted `FittedLinearRegression<f64>` model and the second is the `GeneratedData` struct.
+/// - `Err`: An error message if any of the data generation or regression steps fail.
+///
+/// # Example
+///
+/// ```rust
+/// use marketing_iv_methods::simple_example::run_regressions::run_yxv_regression;
+/// let params = (100, 0.5, 1.0, 2.0, 1.0, 0.5, 1.0, true);
+/// let result = run_yxv_regression(params);
+/// match result {
+///     Ok((model, data)) => {
+///         println!("{:?}", model);
+///         println!("{:?}", data);
+///     }
+///     Err(err) => {
+///         println!("Error: {}", err);
+///     }
+/// }
+/// ```
 pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -> Result<(FittedLinearRegression<f64>, GeneratedData), String> {
     let (n, beta, alpha_y, alpha_x, sigma_a, sigma_ex, sigma_ey, intercept) = params;
 
@@ -63,7 +128,46 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
     Ok((yxv_regression, generated_data))
 }
 
+/// Runs additional regression models, including regression of `y` on `x`, and regression of the composite error term (`alpha_y * v + e_y`) on `x`.
+/// It also calculates the bias term using a formula from the Rossi paper.
+///
+/// # Parameters
+///
+/// - `generated_data`: A reference to a `GeneratedData` struct containing the generated data for regression.
+/// - `intercept`: A boolean indicating whether to include an intercept in the regression.
+///
+/// # Returns
+/// 
+/// Returns a `Result` containing:
+/// - `Ok`: A tuple where the first element is the regression of `y` on `x`, the second element is the regression of the composite error term on `x`,
+///         and the third element is the bias term calculated using a formula from the Rossi paper.
+/// - `Err`: An error message if any of the regression steps fail.
+///
+/// # Example
+///
+/// ```rust
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::run_regressions::GeneratedData;
+/// use marketing_iv_methods::simple_example::run_regressions::run_yxv_regression;
+/// use marketing_iv_methods::simple_example::run_regressions::run_other_regressions;
+///
+/// let params = (100, 0.5, 1.0, 2.0, 1.0, 0.5, 1.0, false);
+/// let (_, generated_data) = run_yxv_regression(params).unwrap();
+/// let intercept = false;
+/// let result = run_other_regressions(&generated_data, intercept);
+/// match result {
+///     Ok((yx_regression, vex_regression, bias)) => {
+///         println!("{:?}", yx_regression);
+///         println!("{:?}", vex_regression);
+///         println!("{}", bias);
+///     }
+///     Err(err) => {
+///         println!("Error: {}", err);
+///     }
+/// }
+/// ```
 pub fn run_other_regressions(generated_data: &GeneratedData, intercept: bool) -> Result<(FittedLinearRegression<f64>, FittedLinearRegression<f64>, f64), String> {
+
     // run the regression of y on x alone
     let yx_regression = match run_regression(&generated_data.x, &generated_data.y, intercept) {
         Ok(model) => { model }

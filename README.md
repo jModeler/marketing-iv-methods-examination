@@ -86,6 +86,7 @@ Main regression (y ~ x + v) coefficients:
 ```
 
 Currently, the outputs are generated based on fixed values in the `main()` function. I will change that to user provided values in the future.
+
 ---
 
 ## 📚 Library Usage

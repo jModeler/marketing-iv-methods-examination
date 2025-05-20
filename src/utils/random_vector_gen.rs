@@ -25,6 +25,7 @@ use ndarray_rand::rand_distr::Distribution;
 /// use ndarray::Array2;
 /// use ndarray_rand::rand_distr::Uniform;
 /// use ndarray_rand::RandomExt;
+/// use marketing_iv_methods::utils::random_vector_gen::random_vector_generate;
 /// 
 /// let n = 10;
 /// let dist = Uniform::new(0.0, 1.0);

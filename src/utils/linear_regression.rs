@@ -19,7 +19,13 @@ use ndarray::{Array2, Array1};
 /// # Example
 ///
 /// ```
-/// let result = run_regression(&x, &y, true)?;
+/// use ndarray::Array2;
+/// use linfa_linear::FittedLinearRegression;
+/// use marketing_iv_methods::utils::linear_regression::run_regression;
+///
+/// let y: Array2<f64> = Array2::from_elem((10, 1), 1.0);
+/// let x: Array2<f64> = Array2::from_elem((10, 1), 0.5);
+/// let result = run_regression(&x, &y, false).unwrap();
 /// let coefficients = result.params();
 /// ```
 pub fn run_regression(

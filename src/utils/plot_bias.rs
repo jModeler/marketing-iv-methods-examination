@@ -23,6 +23,8 @@ use plotters::prelude::*;
 /// # Example
 /// 
 /// ```rust
+/// use marketing_iv_methods::utils::plot_bias::plot_bias_vs_alpha_y; 
+///
 /// let alpha_y_values = vec![1.0, 1.5, 2.0, 2.5];
 /// let bias_values = vec![0.2, 0.15, 0.1, 0.05];
 /// let filename = "bias_vs_alpha_y.png";

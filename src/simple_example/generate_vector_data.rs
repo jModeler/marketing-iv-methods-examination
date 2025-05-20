@@ -15,6 +15,8 @@ use ndarray_rand::rand_distr::Normal;
 /// # Example
 /// 
 /// ```rust
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::generate_vector_data::IndVars;
 /// let ind_vars = IndVars {
 ///     v: Array2::zeros((5, 1)),
 ///     e_x: Array2::zeros((5, 1)),
@@ -47,6 +49,9 @@ pub struct IndVars {
 /// # Example
 /// 
 /// ```rust
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::generate_vector_data::IndVars;
+/// use marketing_iv_methods::simple_example::generate_vector_data::DepVars;
 /// let dep_vars = DepVars {
 ///     y: Array2::zeros((5, 1)),
 ///     e_y: Array2::zeros((5, 1)),
@@ -97,6 +102,9 @@ pub struct DepVars {
 /// # Example
 /// 
 /// ```rust
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::generate_vector_data::IndVars;
+/// use marketing_iv_methods::simple_example::generate_vector_data::ind_var_generate;
 /// let result = ind_var_generate(100, 2.5, 1.0, 1.0);
 /// match result {
 ///     Ok(ind_vars) => {
@@ -164,6 +172,17 @@ pub fn ind_var_generate(n: usize, alpha_x: f64, sigma_a: f64, sigma_ex: f64) -> 
 /// # Example
 /// 
 /// ```rust
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::generate_vector_data::IndVars;
+/// use marketing_iv_methods::simple_example::generate_vector_data::dep_var_generate;
+/// let ind_vars = IndVars {
+///     v: Array2::zeros((5, 1)),
+///     e_x: Array2::zeros((5, 1)),
+///     x: Array2::zeros((5, 1)),
+///     alpha_x: 2.5,
+///     sigma_a: 1.0,
+///     sigma_ex: 1.0,
+/// };
 /// let result = dep_var_generate(-0.5, 1.5, 1.0, ind_vars);
 /// match result {
 ///     Ok(dep_vars) => {

@@ -18,6 +18,8 @@ use linfa_linear::FittedLinearRegression;
 /// # Example
 ///
 /// ```rust
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::run_regressions::GeneratedData;
 /// let generated_data = GeneratedData {
 ///     y: Array2::zeros((5, 1)),
 ///     x: Array2::zeros((5, 1)),
@@ -66,6 +68,7 @@ pub struct GeneratedData {
 /// # Example
 ///
 /// ```rust
+/// use marketing_iv_methods::simple_example::run_regressions::run_yxv_regression;
 /// let params = (100, 0.5, 1.0, 2.0, 1.0, 0.5, 1.0, true);
 /// let result = run_yxv_regression(params);
 /// match result {
@@ -143,17 +146,14 @@ pub fn run_yxv_regression(params: (usize, f64, f64, f64, f64, f64, f64, bool)) -
 /// # Example
 ///
 /// ```rust
-/// let generated_data = GeneratedData {
-///     y: Array2::zeros((5, 1)),
-///     x: Array2::zeros((5, 1)),
-///     v: Array2::zeros((5, 1)),
-///     e_y: Array2::zeros((5, 1)),
-///     sigma_ex: 1.0,
-///     sigma_a: 1.0,
-///     alpha_x: 2.0,
-///     alpha_y: 1.5,
-/// };
-/// let intercept = true;
+/// use ndarray::Array2;
+/// use marketing_iv_methods::simple_example::run_regressions::GeneratedData;
+/// use marketing_iv_methods::simple_example::run_regressions::run_yxv_regression;
+/// use marketing_iv_methods::simple_example::run_regressions::run_other_regressions;
+///
+/// let params = (100, 0.5, 1.0, 2.0, 1.0, 0.5, 1.0, false);
+/// let (_, generated_data) = run_yxv_regression(params).unwrap();
+/// let intercept = false;
 /// let result = run_other_regressions(&generated_data, intercept);
 /// match result {
 ///     Ok((yx_regression, vex_regression, bias)) => {

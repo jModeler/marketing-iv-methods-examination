@@ -15,6 +15,7 @@ This project is designed for educational and experimental purposes, demonstratin
 
 This repository is a hybrid Rust package that includes both a **library** and a **binary** executable.
 
+```
 ├── src
 │ ├── lib.rs # Library entry point
 │ ├── main.rs # Binary entry point (CLI)
@@ -23,7 +24,7 @@ This repository is a hybrid Rust package that includes both a **library** and a 
 ├── tests/ # Integration and doctests
 ├── Cargo.toml # Project metadata and dependencies
 └── README.md # You're here
-
+```
 
 ---
 

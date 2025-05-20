@@ -20,6 +20,7 @@ use linfa_linear::FittedLinearRegression;
 /// ```rust
 /// use ndarray::Array2;
 /// use marketing_iv_methods::simple_example::run_regressions::GeneratedData;
+///
 /// let generated_data = GeneratedData {
 ///     y: Array2::zeros((5, 1)),
 ///     x: Array2::zeros((5, 1)),
@@ -69,6 +70,7 @@ pub struct GeneratedData {
 ///
 /// ```rust
 /// use marketing_iv_methods::simple_example::run_regressions::run_yxv_regression;
+///
 /// let params = (100, 0.5, 1.0, 2.0, 1.0, 0.5, 1.0, true);
 /// let result = run_yxv_regression(params);
 /// match result {

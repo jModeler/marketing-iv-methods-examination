@@ -73,42 +73,41 @@ pub struct DepVars {
     pub ind_vars: IndVars,
 }
 
+/// Generates independent variables for a regression model.
+///
+/// This function generates a set of independent variables, including:
+/// - A random error term `v` with standard deviation `sigma_a`.
+/// - A random error term `e_x` with standard deviation `sigma_ex`.
+/// - The independent variable `x`, which is calculated as `x = alpha_x * v + e_x`.
+///
+/// The function returns a `Result` that contains an `IndVars` struct with the generated data.
+///
+/// # Parameters
+/// 
+/// - `n`: The number of observations (i.e., the number of rows in the generated arrays).
+/// - `alpha_x`: The coefficient for the variable `v`.
+/// - `sigma_a`: The standard deviation for the error term `v`.
+/// - `sigma_ex`: The standard deviation for the error term `e_x`.
+///
+/// # Returns
+/// 
+/// Returns a `Result<IndVars, String>`, where `Ok` contains the generated independent variables, 
+/// and `Err` contains an error message if the inputs are invalid (e.g., non-positive standard deviations).
+///
+/// # Example
+/// 
+/// ```rust
+/// let result = ind_var_generate(100, 2.5, 1.0, 1.0);
+/// match result {
+///     Ok(ind_vars) => {
+///         println!("{:?}", ind_vars);
+///     }
+///     Err(err) => {
+///         println!("Error: {}", err);
+///     }
+/// }
+/// ```
 pub fn ind_var_generate(n: usize, alpha_x: f64, sigma_a: f64, sigma_ex: f64) -> Result<IndVars, String> {
-    /// Generates independent variables for a regression model.
-    ///
-    /// This function generates a set of independent variables, including:
-    /// - A random error term `v` with standard deviation `sigma_a`.
-    /// - A random error term `e_x` with standard deviation `sigma_ex`.
-    /// - The independent variable `x`, which is calculated as `x = alpha_x * v + e_x`.
-    ///
-    /// The function returns a `Result` that contains an `IndVars` struct with the generated data.
-    ///
-    /// # Parameters
-    /// 
-    /// - `n`: The number of observations (i.e., the number of rows in the generated arrays).
-    /// - `alpha_x`: The coefficient for the variable `v`.
-    /// - `sigma_a`: The standard deviation for the error term `v`.
-    /// - `sigma_ex`: The standard deviation for the error term `e_x`.
-    ///
-    /// # Returns
-    /// 
-    /// Returns a `Result<IndVars, String>`, where `Ok` contains the generated independent variables, 
-    /// and `Err` contains an error message if the inputs are invalid (e.g., non-positive standard deviations).
-    ///
-    /// # Example
-    /// 
-    /// ```rust
-    /// let result = ind_var_generate(100, 2.5, 1.0, 1.0);
-    /// match result {
-    ///     Ok(ind_vars) => {
-    ///         println!("{:?}", ind_vars);
-    ///     }
-    ///     Err(err) => {
-    ///         println!("Error: {}", err);
-    ///     }
-    /// }
-    /// ```
-
     // check that sigma values are positive
     if sigma_a <= 0.0 {
         return Err("sigma_a must be positive".into());
@@ -138,45 +137,44 @@ pub fn ind_var_generate(n: usize, alpha_x: f64, sigma_a: f64, sigma_ex: f64) -> 
     }) 
 }
 
+/// Generates dependent variables for a regression model using the independent variables.
+///
+/// This function generates the dependent variable `y` based on the formula:
+/// 
+/// `y = beta * x + alpha_y * v + e_y`, where:
+/// - `x` and `v` are the independent variables from the `IndVars` structure.
+/// - `beta` is the coefficient for the independent variable `x`.
+/// - `alpha_y` is the coefficient for the independent variable `v`.
+/// - `e_y` is the error term generated with standard deviation `sigma_ey`.
+///
+/// The function returns a `Result` containing a `DepVars` struct with the generated data.
+///
+/// # Parameters
+/// 
+/// - `beta`: The coefficient for the independent variable `x`.
+/// - `alpha_y`: The coefficient for the independent variable `v`.
+/// - `sigma_ey`: The standard deviation for the error term `e_y`.
+/// - `ind_vars`: The independent variables, returned by `ind_var_generate`.
+///
+/// # Returns
+/// 
+/// Returns a `Result<DepVars, String>`, where `Ok` contains the generated dependent variables, 
+/// and `Err` contains an error message if the inputs are invalid (e.g., non-positive standard deviation).
+///
+/// # Example
+/// 
+/// ```rust
+/// let result = dep_var_generate(-0.5, 1.5, 1.0, ind_vars);
+/// match result {
+///     Ok(dep_vars) => {
+///         println!("{:?}", dep_vars);
+///     }
+///     Err(err) => {
+///         println!("Error: {}", err);
+///     }
+/// }
+/// ```
 pub fn dep_var_generate(beta: f64, alpha_y: f64, sigma_ey: f64, ind_vars: IndVars) -> Result<DepVars, String> {
-    /// Generates dependent variables for a regression model using the independent variables.
-    ///
-    /// This function generates the dependent variable `y` based on the formula:
-    /// 
-    /// `y = beta * x + alpha_y * v + e_y`, where:
-    /// - `x` and `v` are the independent variables from the `IndVars` structure.
-    /// - `beta` is the coefficient for the independent variable `x`.
-    /// - `alpha_y` is the coefficient for the independent variable `v`.
-    /// - `e_y` is the error term generated with standard deviation `sigma_ey`.
-    ///
-    /// The function returns a `Result` containing a `DepVars` struct with the generated data.
-    ///
-    /// # Parameters
-    /// 
-    /// - `beta`: The coefficient for the independent variable `x`.
-    /// - `alpha_y`: The coefficient for the independent variable `v`.
-    /// - `sigma_ey`: The standard deviation for the error term `e_y`.
-    /// - `ind_vars`: The independent variables, returned by `ind_var_generate`.
-    ///
-    /// # Returns
-    /// 
-    /// Returns a `Result<DepVars, String>`, where `Ok` contains the generated dependent variables, 
-    /// and `Err` contains an error message if the inputs are invalid (e.g., non-positive standard deviation).
-    ///
-    /// # Example
-    /// 
-    /// ```rust
-    /// let result = dep_var_generate(-0.5, 1.5, 1.0, ind_vars);
-    /// match result {
-    ///     Ok(dep_vars) => {
-    ///         println!("{:?}", dep_vars);
-    ///     }
-    ///     Err(err) => {
-    ///         println!("Error: {}", err);
-    ///     }
-    /// }
-    /// ```
-
     // check that sigma_ey is positive
     if sigma_ey <= 0.0 {
         return Err("sigma_ey must be positive".into());

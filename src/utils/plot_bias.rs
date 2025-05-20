@@ -1,5 +1,36 @@
 use plotters::prelude::*;
 
+/// Plots the bias values against the alpha_y values and saves the plot to a file.
+///
+/// This function generates a 2D line plot where the x-axis represents the `alpha_y` values, 
+/// and the y-axis represents the corresponding bias values. It then saves the plot as an image 
+/// in the specified file.
+///
+/// # Parameters
+/// 
+/// - `x_vals`: A slice of `f64` values representing the `alpha_y` values to be plotted on the x-axis.
+/// - `y_vals`: A slice of `f64` values representing the bias values to be plotted on the y-axis.
+/// - `filename`: The path (including file name) where the plot image will be saved.
+/// - `title`: The title of the plot.
+/// - `x_label`: The label for the x-axis.
+/// - `y_label`: The label for the y-axis.
+///
+/// # Returns
+/// 
+/// Returns a `Result<(), Box<dyn std::error::Error>>`, where `Ok(())` indicates success and
+/// any error encountered during the plot generation (e.g., drawing, file writing) is returned as a `Box<dyn std::error::Error>`.
+///
+/// # Example
+/// 
+/// ```rust
+/// let alpha_y_values = vec![1.0, 1.5, 2.0, 2.5];
+/// let bias_values = vec![0.2, 0.15, 0.1, 0.05];
+/// let filename = "bias_vs_alpha_y.png";
+/// let title = "Bias vs Alpha_y";
+/// let x_label = "Alpha_y";
+/// let y_label = "Bias";
+/// plot_bias_vs_alpha_y(&alpha_y_values, &bias_values, filename, title, x_label, y_label).unwrap();
+    /// ```
 pub fn plot_bias_vs_alpha_y(
     x_vals: &[f64],
     y_vals: &[f64],
@@ -8,37 +39,6 @@ pub fn plot_bias_vs_alpha_y(
     x_label: &str,
     y_label: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    /// Plots the bias values against the alpha_y values and saves the plot to a file.
-    ///
-    /// This function generates a 2D line plot where the x-axis represents the `alpha_y` values, 
-    /// and the y-axis represents the corresponding bias values. It then saves the plot as an image 
-    /// in the specified file.
-    ///
-    /// # Parameters
-    /// 
-    /// - `x_vals`: A slice of `f64` values representing the `alpha_y` values to be plotted on the x-axis.
-    /// - `y_vals`: A slice of `f64` values representing the bias values to be plotted on the y-axis.
-    /// - `filename`: The path (including file name) where the plot image will be saved.
-    /// - `title`: The title of the plot.
-    /// - `x_label`: The label for the x-axis.
-    /// - `y_label`: The label for the y-axis.
-    ///
-    /// # Returns
-    /// 
-    /// Returns a `Result<(), Box<dyn std::error::Error>>`, where `Ok(())` indicates success and
-    /// any error encountered during the plot generation (e.g., drawing, file writing) is returned as a `Box<dyn std::error::Error>`.
-    ///
-    /// # Example
-    /// 
-    /// ```rust
-    /// let alpha_y_values = vec![1.0, 1.5, 2.0, 2.5];
-    /// let bias_values = vec![0.2, 0.15, 0.1, 0.05];
-    /// let filename = "bias_vs_alpha_y.png";
-    /// let title = "Bias vs Alpha_y";
-    /// let x_label = "Alpha_y";
-    /// let y_label = "Bias";
-    /// plot_bias_vs_alpha_y(&alpha_y_values, &bias_values, filename, title, x_label, y_label).unwrap();
-    /// ```
     let root = BitMapBackend::new(filename, (800, 600)).into_drawing_area();
     root.fill(&WHITE)?;
 
